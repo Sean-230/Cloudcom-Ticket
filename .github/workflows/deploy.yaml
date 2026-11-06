@@ -73,8 +73,6 @@ jobs:
         npm ci
         npm run build
 
-
-
   deploy:
     name: Deploy to Live Hosting
     needs: laravel-tests # Ensures deployment only happens if tests pass successfully
