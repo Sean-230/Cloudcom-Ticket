@@ -59,7 +59,7 @@
                     PRESALE PHASE 1 SEGERA DITUTUP
                 </div>
                 <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
-                    Neon Horizon Live in Jakarta
+                    Neon Horizon Live in Surabaya
                 </h2>
                 <p class="text-sm sm:text-base text-slate-300 mb-6 leading-relaxed">
                     Pengalaman konser musik audiovisual terbesar tahun ini. Amankan e-ticket Anda sekarang sebelum kuota kursi habis!
