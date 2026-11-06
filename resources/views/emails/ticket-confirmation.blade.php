@@ -46,8 +46,8 @@
                         <!-- Header -->
                         <div class="header">
                             <span class="badge">Official E-Ticket Confirmation</span>
-                            <h1>NEON HORIZON FEST 2026</h1>
-                            <p>Tiket Konser Audiovisual Terbesar 2026</p>
+                            <h1>NEON HORIZON FEST 2027</h1>
+                            <p>Tiket Konser Audiovisual Terbesar 2027</p>
                         </div>
 
                         <!-- Body Content -->
