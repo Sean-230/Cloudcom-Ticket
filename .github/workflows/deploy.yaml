@@ -10,7 +10,7 @@ permissions:
 jobs:
   laravel-tests:
     name: Run Tests & Build Assets
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     services:
       mysql:
@@ -76,7 +76,7 @@ jobs:
   deploy:
     name: Deploy to Live Hosting
     needs: laravel-tests # Ensures deployment only happens if tests pass successfully
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
     - name: Checkout Code
@@ -128,7 +128,9 @@ jobs:
           cd /home/gambitneverfold-ticketsean/htdocs/ticketsean.gambitneverfold.web.id
 
           git config --global --add safe.directory /home/gambitneverfold-ticketsean/htdocs/ticketsean.gambitneverfold.web.id
-          git pull origin main
+          git remote set-url origin https://github.com/Sean-230/Cloudcom-Ticket.git
+          git fetch origin main
+          git reset --hard origin/main
 
           rm -rf vendor
           tar -xzf vendor.tar.gz
