@@ -2,7 +2,7 @@ name: Laravel 13 CI/CD Deployment
 
 on:
   push:
-    branches: [ "main" ] # Triggers only when code is pushed to your main production branch
+    branches: ["main"]
 
 permissions:
   contents: write
@@ -10,7 +10,7 @@ permissions:
 jobs:
   laravel-tests:
     name: Run Tests & Build Assets
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     services:
       mysql:
@@ -25,14 +25,12 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GH_TOKEN }}
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.4'
-        extensions: mbstring, xml, ctype, iconv, pdo_mysql, bcmath, filter, zip
+        php-version: '8.5'
+        extensions: mbstring, xml, ctype, iconv, mysql, bcmath, filter, zip
         tools: composer:v2
         coverage: none
 
@@ -75,18 +73,12 @@ jobs:
         npm ci
         npm run build
 
-    # Optional: Push compiled production assets back to Git if your deployment relies on Git integration
-    - name: Commit Built Assets (If required by your hosting Git sync)
-      run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git add public/build -f
-        git diff-index --quiet HEAD || (git commit -m "chore: build production assets [skip ci]" && git push origin main)
+
 
   deploy:
     name: Deploy to Live Hosting
     needs: laravel-tests # Ensures deployment only happens if tests pass successfully
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Code
@@ -95,8 +87,8 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: '8.4'
-        extensions: mbstring, xml, ctype, iconv, pdo_mysql, bcmath, filter, zip
+        php-version: '8.5'
+        extensions: mbstring, xml, ctype, iconv, bcmath, filter, zip
         tools: composer:v2
         coverage: none
 
@@ -133,10 +125,20 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
         port: 22
         script: |
+          set -e
+
           cd /home/gambitneverfold-ticketsean/htdocs/ticketsean.gambitneverfold.web.id
+
+          git config --global --add safe.directory /home/gambitneverfold-ticketsean/htdocs/ticketsean.gambitneverfold.web.id
           git pull origin main
+
           rm -rf vendor
           tar -xzf vendor.tar.gz
           rm -f vendor.tar.gz
+
+          rm -f bootstrap/cache/packages.php
+          rm -f bootstrap/cache/services.php
+
+          php artisan optimize:clear
           php artisan migrate --force
           php artisan config:cache
